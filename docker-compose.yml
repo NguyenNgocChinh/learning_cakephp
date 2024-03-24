@@ -1,0 +1,27 @@
+version: '3.6'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8001:80"
+    environment:
+      DATABASE_URL: "mysql://cakephp:secret@db/myapp"
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: myapp
+      MYSQL_USER: cakephp
+      MYSQL_PASSWORD: secret
+    ports:
+      - "3309:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+
+volumes:
+  db-data:
